@@ -3,6 +3,7 @@
 const Input = ({
   label,
   type = "text",
+  name,
   value,
   onChange,
   placeholder,
@@ -12,6 +13,11 @@ const Input = ({
   disabled = false,
   className = ""
 }) => {
+  const handleChange = (e) => {
+    console.log(`Input ${name} changing:`, e.target.value); // Debug log
+    onChange(e);
+  };
+
   return (
     <div className="w-full">
       {label && (
@@ -27,8 +33,9 @@ const Input = ({
         )}
         <input
           type={type}
+          name={name}
           value={value}
-          onChange={onChange}
+          onChange={handleChange}
           placeholder={placeholder}
           disabled={disabled}
           required={required}
