@@ -22,7 +22,6 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem('token'));
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (token) {
@@ -57,7 +56,6 @@ export const AuthProvider = ({ children }) => {
       setUser(user);
       
       toast.success('Registration successful! 🎉');
-      navigate('/dashboard');
       return { success: true };
     } catch (error) {
       toast.error(error.message || 'Registration failed');
@@ -78,12 +76,41 @@ export const AuthProvider = ({ children }) => {
       setToken(token);
       setUser(user);
       
-      toast.success('Welcome back! 👋');
-      navigate('/dashboard');
+      toast.success(`Welcome back, ${user.name}! 👋`);
       return { success: true };
     } catch (error) {
       toast.error(error.message || 'Login failed');
       return { success: false, error: error.message };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const socialLogin = async (provider) => {
+    // Simulate social login - in production, this would redirect to OAuth
+    try {
+      setLoading(true);
+      
+      // Mock social login response
+      const mockUser = {
+        id: `social_${Date.now()}`,
+        name: `${provider.charAt(0).toUpperCase() + provider.slice(1)} User`,
+        email: `user@${provider}.com`,
+        avatar: `https://ui-avatars.com/api/?name=${provider}&background=6366f1&color=fff&size=128`,
+        provider: provider
+      };
+      
+      const mockToken = `social_token_${Date.now()}`;
+      
+      localStorage.setItem('token', mockToken);
+      setToken(mockToken);
+      setUser(mockUser);
+      
+      toast.success(`Signed in with ${provider}! 🎉`);
+      return { success: true };
+    } catch (error) {
+      toast.error(`${provider} login failed`);
+      return { success: false };
     } finally {
       setLoading(false);
     }
@@ -94,7 +121,6 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     setUser(null);
     toast.success('Logged out successfully');
-    navigate('/');
   };
 
   const updateProfile = async (userData) => {
@@ -125,6 +151,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     register,
     login,
+    socialLogin,
     logout,
     updateProfile,
     updatePassword,
