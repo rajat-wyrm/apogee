@@ -1,10 +1,10 @@
 /* =============================================
    APOGEE - ULTIMATE GLOBAL STYLES
-   The Pinnacle of Web Design
+   The Complete Working Version
    ============================================= */
 
 /* ---------------------------------------------
-   TAILWIND BASE LAYER
+   TAILWIND DIRECTIVES - MUST BE FIRST
    --------------------------------------------- */
 @tailwind base;
 @tailwind components;
@@ -15,322 +15,352 @@
    --------------------------------------------- */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Cal+Sans&display=swap');
 
 /* ---------------------------------------------
    CSS CUSTOM PROPERTIES (DESIGN TOKENS)
    --------------------------------------------- */
 @layer base {
   :root {
-    /* Color System - Light Theme */
+    /* Light Theme Colors - HSL format for flexibility */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
-    
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-    
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    
     --primary: 221.2 83.2% 53.3%;
     --primary-foreground: 210 40% 98%;
-    
     --secondary: 270 67% 47%;
     --secondary-foreground: 210 40% 98%;
-    
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
-    
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
-    
     --radius: 0.75rem;
-    
-    /* Chart Colors */
-    --chart-1: 221.2 83.2% 53.3%;
-    --chart-2: 270 67% 47%;
-    --chart-3: 326 78% 55%;
-    --chart-4: 31 95% 55%;
-    --chart-5: 142 71% 45%;
   }
 
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-    
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
-    
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    
     --primary: 217.2 91.2% 59.8%;
     --primary-foreground: 222.2 47.4% 11.2%;
-    
     --secondary: 270 67% 57%;
     --secondary-foreground: 210 40% 98%;
-    
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-    
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
-    
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 224.3 76.3% 48%;
   }
-}
 
-/* ---------------------------------------------
-   BASE STYLES
-   --------------------------------------------- */
-@layer base {
   * {
     @apply border-border;
-    box-sizing: border-box;
   }
 
   html {
     @apply scroll-smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased overflow-x-hidden;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    line-height: 1.6;
-    min-height: 100vh;
+    @apply bg-background text-foreground font-sans antialiased min-h-screen;
+    font-family: 'Inter', sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-bold tracking-tight;
   }
-
-  h1 {
-    @apply text-4xl md:text-5xl lg:text-6xl;
-  }
-
-  h2 {
-    @apply text-3xl md:text-4xl lg:text-5xl;
-  }
-
-  h3 {
-    @apply text-2xl md:text-3xl;
-  }
-
-  ::selection {
-    @apply bg-primary/20 text-primary;
-  }
 }
 
 /* ---------------------------------------------
-   CUSTOM SCROLLBAR
+   UTILITIES LAYER - CUSTOM HELPER CLASSES
    --------------------------------------------- */
 @layer utilities {
-  ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+  /* Background Utilities */
+  .bg-background {
+    background-color: hsl(var(--background));
+  }
+  
+  .bg-card {
+    background-color: hsl(var(--card));
+  }
+  
+  .bg-popover {
+    background-color: hsl(var(--popover));
+  }
+  
+  .bg-primary {
+    background-color: hsl(var(--primary));
+  }
+  
+  .bg-secondary {
+    background-color: hsl(var(--secondary));
+  }
+  
+  .bg-muted {
+    background-color: hsl(var(--muted));
+  }
+  
+  .bg-accent {
+    background-color: hsl(var(--accent));
+  }
+  
+  .bg-destructive {
+    background-color: hsl(var(--destructive));
   }
 
-  ::-webkit-scrollbar-track {
-    @apply bg-muted/30;
-    border-radius: 10px;
+  /* Text Utilities */
+  .text-foreground {
+    color: hsl(var(--foreground));
+  }
+  
+  .text-card-foreground {
+    color: hsl(var(--card-foreground));
+  }
+  
+  .text-popover-foreground {
+    color: hsl(var(--popover-foreground));
+  }
+  
+  .text-primary-foreground {
+    color: hsl(var(--primary-foreground));
+  }
+  
+  .text-secondary-foreground {
+    color: hsl(var(--secondary-foreground));
+  }
+  
+  .text-muted-foreground {
+    color: hsl(var(--muted-foreground));
+  }
+  
+  .text-accent-foreground {
+    color: hsl(var(--accent-foreground));
+  }
+  
+  .text-destructive-foreground {
+    color: hsl(var(--destructive-foreground));
   }
 
-  ::-webkit-scrollbar-thumb {
-    @apply bg-gradient-to-b from-primary to-secondary rounded-full;
-    border: 2px solid transparent;
-    background-clip: padding-box;
+  /* Border Utilities */
+  .border-border {
+    border-color: hsl(var(--border));
+  }
+  
+  .border-input {
+    border-color: hsl(var(--input));
+  }
+  
+  .border-ring {
+    border-color: hsl(var(--ring));
   }
 
-  ::-webkit-scrollbar-thumb:hover {
-    @apply from-primary/80 to-secondary/80;
+  /* Ring Utilities */
+  .ring-ring {
+    --tw-ring-color: hsl(var(--ring));
   }
 
-  ::-webkit-scrollbar-corner {
-    background: transparent;
+  /* Radius Utilities */
+  .rounded-radius {
+    border-radius: var(--radius);
   }
-}
-
-/* ---------------------------------------------
-   COMPONENT LAYER - PREMIUM CLASSES
-   --------------------------------------------- */
-@layer components {
-  /* Glass Morphism */
-  .glass {
-    @apply bg-white/10 dark:bg-gray-900/50 backdrop-blur-lg border border-white/20 dark:border-gray-800/50 shadow-xl;
+  
+  .rounded-radius-lg {
+    border-radius: calc(var(--radius) + 0.25rem);
   }
-
-  .glass-card {
-    @apply glass rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-primary/20;
+  
+  .rounded-radius-sm {
+    border-radius: calc(var(--radius) - 0.25rem);
   }
 
-  .glass-nav {
-    @apply fixed top-0 w-full z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-800/50;
+  /* Gradient Backgrounds */
+  .bg-gradient-primary {
+    @apply bg-gradient-to-r from-blue-600 to-purple-600;
+  }
+  
+  .bg-gradient-secondary {
+    @apply bg-gradient-to-r from-purple-600 to-pink-600;
+  }
+  
+  .bg-gradient-success {
+    @apply bg-gradient-to-r from-green-600 to-teal-600;
+  }
+  
+  .bg-gradient-warning {
+    @apply bg-gradient-to-r from-yellow-600 to-orange-600;
+  }
+  
+  .bg-gradient-danger {
+    @apply bg-gradient-to-r from-red-600 to-pink-600;
   }
 
   /* Gradient Text */
-  .gradient-text {
-    @apply bg-gradient-to-r from-primary via-secondary to-pink-600 bg-clip-text text-transparent bg-size-200 animate-gradient;
+  .text-gradient-primary {
+    @apply bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-secondary {
+    @apply bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-success {
+    @apply bg-gradient-to-r from-green-600 to-teal-600 bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-warning {
+    @apply bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-danger {
+    @apply bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent;
   }
 
-  .gradient-text-slow {
-    @apply bg-gradient-to-r from-primary via-secondary to-pink-600 bg-clip-text text-transparent bg-size-200 animate-gradient-slow;
+  /* Glass Morphism */
+  .glass {
+    @apply bg-white/10 backdrop-blur-lg border border-white/20 shadow-xl;
+  }
+  
+  .glass-dark {
+    @apply bg-gray-900/50 backdrop-blur-lg border border-gray-800/50 shadow-xl;
+  }
+  
+  .glass-card {
+    @apply glass rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl;
+  }
+  
+  .glass-card-dark {
+    @apply glass-dark rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl;
   }
 
   /* Buttons */
   .btn-primary {
-    @apply relative px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white font-semibold rounded-xl 
-           hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 
-           active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden;
+    @apply px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl 
+           hover:shadow-lg hover:shadow-blue-600/30 transition-all duration-300 
+           active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
   }
-
-  .btn-primary::before {
-    content: '';
-    @apply absolute inset-0 bg-gradient-to-r from-secondary to-pink-600 opacity-0 transition-opacity duration-300;
-  }
-
-  .btn-primary:hover::before {
-    @apply opacity-100;
-  }
-
-  .btn-primary span {
-    @apply relative z-10;
-  }
-
+  
   .btn-secondary {
-    @apply px-6 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white font-semibold rounded-xl 
-           border border-gray-200 dark:border-gray-700 hover:border-primary/50 
-           transition-all duration-300 active:scale-95;
+    @apply px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white font-semibold rounded-xl 
+           hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300 active:scale-95;
   }
-
+  
   .btn-outline {
-    @apply px-6 py-3 border-2 border-primary text-primary font-semibold rounded-xl 
-           hover:bg-primary hover:text-white transition-all duration-300 active:scale-95;
+    @apply px-6 py-3 border-2 border-blue-600 text-blue-600 dark:text-blue-400 font-semibold rounded-xl 
+           hover:bg-blue-600 hover:text-white transition-all duration-300 active:scale-95;
   }
-
-  /* Input Fields */
-  .input-primary {
-    @apply w-full px-4 py-3 bg-white/50 dark:bg-gray-800/50 border-2 rounded-xl 
-           focus:outline-none focus:border-primary transition-all duration-300
-           placeholder:text-gray-400 dark:placeholder:text-gray-600;
-  }
-
-  .input-error {
-    @apply border-red-500 focus:border-red-500;
-  }
-
-  .input-success {
-    @apply border-green-500 focus:border-green-500;
+  
+  .btn-ghost {
+    @apply px-6 py-3 text-gray-700 dark:text-gray-300 font-semibold rounded-xl 
+           hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 active:scale-95;
   }
 
   /* Cards */
   .card {
-    @apply bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 
-           p-6 transition-all duration-300 hover:shadow-xl hover:border-primary/30;
+    @apply bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6;
   }
-
+  
   .card-hover {
-    @apply hover:scale-[1.02] hover:shadow-2xl;
+    @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+  }
+  
+  .card-glass {
+    @apply glass rounded-2xl p-6;
   }
 
-  /* Navigation */
-  .nav-link {
-    @apply px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary 
-           font-medium rounded-lg transition-all duration-200 relative;
+  /* Inputs */
+  .input-primary {
+    @apply w-full px-4 py-3 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 
+           rounded-xl focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 
+           transition-all duration-300 text-gray-900 dark:text-white;
   }
-
-  .nav-link-active {
-    @apply text-primary dark:text-primary bg-primary/10;
+  
+  .input-error {
+    @apply border-red-500 focus:border-red-500;
   }
-
-  .nav-link-active::after {
-    content: '';
-    @apply absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary rounded-full;
+  
+  .input-success {
+    @apply border-green-500 focus:border-green-500;
   }
 
   /* Badges */
   .badge {
-    @apply px-2.5 py-0.5 text-xs font-medium rounded-full;
+    @apply inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded-full;
   }
-
+  
   .badge-primary {
-    @apply bg-primary/10 text-primary border border-primary/20;
+    @apply bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300;
   }
-
+  
   .badge-success {
-    @apply bg-green-500/10 text-green-600 border border-green-500/20;
+    @apply bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300;
   }
-
+  
   .badge-warning {
-    @apply bg-yellow-500/10 text-yellow-600 border border-yellow-500/20;
+    @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300;
   }
-
+  
   .badge-danger {
-    @apply bg-red-500/10 text-red-600 border border-red-500/20;
+    @apply bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300;
   }
 
   /* Avatars */
   .avatar {
     @apply relative inline-block rounded-full overflow-hidden;
   }
-
+  
   .avatar-sm {
     @apply w-8 h-8;
   }
-
+  
   .avatar-md {
     @apply w-10 h-10;
   }
-
+  
   .avatar-lg {
     @apply w-12 h-12;
   }
-
+  
   .avatar-xl {
     @apply w-16 h-16;
   }
-
+  
   .avatar-2xl {
     @apply w-20 h-20;
   }
 
-  .avatar-ring {
-    @apply ring-2 ring-white dark:ring-gray-800;
-  }
-
   /* Loading States */
   .loading-spinner {
-    @apply w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin;
+    @apply w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin;
   }
-
+  
   .loading-dots {
     @apply flex space-x-1;
   }
-
+  
   .loading-dots div {
-    @apply w-2 h-2 bg-primary rounded-full animate-bounce;
+    @apply w-2 h-2 bg-blue-600 rounded-full animate-bounce;
   }
-
+  
   .loading-dots div:nth-child(2) {
-    animation-delay: 0.2s;
+    animation-delay: 0.1s;
   }
-
+  
   .loading-dots div:nth-child(3) {
-    animation-delay: 0.4s;
+    animation-delay: 0.2s;
   }
 
   /* Skeleton Loading */
@@ -339,40 +369,40 @@
            bg-[length:200%_100%] animate-shimmer rounded;
   }
 
+  /* Progress Bars */
+  .progress-bar {
+    @apply w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden;
+  }
+  
+  .progress-fill {
+    @apply h-full bg-gradient-to-r from-blue-600 to-purple-600 rounded-full transition-all duration-500;
+  }
+
   /* Tooltips */
   .tooltip {
     @apply absolute z-50 px-2 py-1 text-xs font-medium text-white bg-gray-900 dark:bg-gray-700 
            rounded shadow-lg opacity-0 transition-opacity duration-200 pointer-events-none;
   }
-
+  
   .has-tooltip:hover .tooltip {
     @apply opacity-100;
   }
 
-  /* Progress Bars */
-  .progress-bar {
-    @apply w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden;
+  /* Dividers */
+  .divider {
+    @apply w-full h-px bg-gray-200 dark:bg-gray-700 my-4;
   }
-
-  .progress-fill {
-    @apply h-full bg-gradient-to-r from-primary to-secondary rounded-full transition-all duration-500;
+  
+  .divider-vertical {
+    @apply w-px h-full bg-gray-200 dark:bg-gray-700 mx-4;
   }
 }
 
 /* ---------------------------------------------
-   UTILITIES LAYER - CUSTOM ANIMATIONS
+   ANIMATIONS LAYER
    --------------------------------------------- */
 @layer utilities {
-  /* Background Sizes */
-  .bg-size-200 {
-    background-size: 200% 200%;
-  }
-
-  .bg-size-300 {
-    background-size: 300% 300%;
-  }
-
-  /* Animations */
+  /* Gradient Animation */
   @keyframes gradient {
     0%, 100% {
       background-position: 0% 50%;
@@ -381,15 +411,18 @@
       background-position: 100% 50%;
     }
   }
-
+  
   .animate-gradient {
     animation: gradient 3s ease infinite;
+    background-size: 200% 200%;
   }
-
+  
   .animate-gradient-slow {
     animation: gradient 6s ease infinite;
+    background-size: 200% 200%;
   }
 
+  /* Float Animation */
   @keyframes float {
     0%, 100% {
       transform: translateY(0);
@@ -398,11 +431,16 @@
       transform: translateY(-10px);
     }
   }
-
+  
   .animate-float {
     animation: float 3s ease-in-out infinite;
   }
+  
+  .animate-float-slow {
+    animation: float 5s ease-in-out infinite;
+  }
 
+  /* Pulse Glow Animation */
   @keyframes pulse-glow {
     0%, 100% {
       opacity: 0.5;
@@ -413,11 +451,12 @@
       transform: scale(1.05);
     }
   }
-
+  
   .animate-pulse-glow {
     animation: pulse-glow 2s ease-in-out infinite;
   }
 
+  /* Shimmer Animation */
   @keyframes shimmer {
     0% {
       background-position: -200% 0;
@@ -426,11 +465,12 @@
       background-position: 200% 0;
     }
   }
-
+  
   .animate-shimmer {
     animation: shimmer 2s linear infinite;
   }
 
+  /* Slide In Animation */
   @keyframes slide-in {
     from {
       transform: translateX(-100%);
@@ -441,11 +481,12 @@
       opacity: 1;
     }
   }
-
+  
   .animate-slide-in {
     animation: slide-in 0.3s ease-out;
   }
 
+  /* Slide Up Animation */
   @keyframes slide-up {
     from {
       transform: translateY(20px);
@@ -456,11 +497,12 @@
       opacity: 1;
     }
   }
-
+  
   .animate-slide-up {
     animation: slide-up 0.3s ease-out;
   }
 
+  /* Fade In Animation */
   @keyframes fade-in {
     from {
       opacity: 0;
@@ -469,11 +511,12 @@
       opacity: 1;
     }
   }
-
+  
   .animate-fade-in {
     animation: fade-in 0.3s ease-out;
   }
 
+  /* Scale In Animation */
   @keyframes scale-in {
     from {
       transform: scale(0.9);
@@ -484,11 +527,12 @@
       opacity: 1;
     }
   }
-
+  
   .animate-scale-in {
     animation: scale-in 0.3s ease-out;
   }
 
+  /* Spin Slow Animation */
   @keyframes spin-slow {
     from {
       transform: rotate(0deg);
@@ -497,11 +541,12 @@
       transform: rotate(360deg);
     }
   }
-
+  
   .animate-spin-slow {
     animation: spin-slow 8s linear infinite;
   }
 
+  /* Bounce Smooth Animation */
   @keyframes bounce-smooth {
     0%, 100% {
       transform: translateY(0);
@@ -512,72 +557,35 @@
       animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
     }
   }
-
+  
   .animate-bounce-smooth {
     animation: bounce-smooth 1.5s infinite;
   }
+}
 
-  /* 3D Effects */
-  .preserve-3d {
-    transform-style: preserve-3d;
+/* ---------------------------------------------
+   CUSTOM SCROLLBAR
+   --------------------------------------------- */
+@layer utilities {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
   }
 
-  .perspective {
-    perspective: 1000px;
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100 dark:bg-gray-800;
   }
 
-  .perspective-3d {
-    transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
-    transition: transform 0.3s ease;
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gradient-to-b from-blue-600 to-purple-600 rounded-full;
   }
 
-  .perspective-3d:hover {
-    transform: perspective(1000px) rotateX(2deg) rotateY(2deg);
+  ::-webkit-scrollbar-thumb:hover {
+    @apply from-blue-700 to-purple-700;
   }
 
-  /* Text Effects */
-  .text-shadow {
-    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-
-  .text-shadow-lg {
-    text-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  }
-
-  .text-shadow-none {
-    text-shadow: none;
-  }
-
-  /* Mask Effects */
-  .mask-gradient {
-    mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
-  }
-
-  .mask-radial {
-    mask-image: radial-gradient(circle at center, black, transparent 80%);
-  }
-
-  /* Blur Effects */
-  .backdrop-blur-custom {
-    backdrop-filter: blur(12px) saturate(180%);
-    -webkit-backdrop-filter: blur(12px) saturate(180%);
-  }
-
-  .blur-custom {
-    filter: blur(12px) saturate(180%);
-  }
-
-  /* Grid Patterns */
-  .bg-grid {
-    background-image: 
-      linear-gradient(to right, rgba(99, 102, 241, 0.1) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(99, 102, 241, 0.1) 1px, transparent 1px);
-    background-size: 20px 20px;
-  }
-
-  .bg-dots {
-    background-image: radial-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px);
-    background-size: 20px 20px;
+  ::-webkit-scrollbar-corner {
+    background: transparent;
   }
 }
 
@@ -588,55 +596,11 @@
   .container {
     @apply px-4;
   }
-
-  h1 {
-    @apply text-3xl;
-  }
-
-  h2 {
-    @apply text-2xl;
-  }
-
-  h3 {
-    @apply text-xl;
-  }
 }
 
 @media (max-width: 480px) {
   .container {
     @apply px-3;
-  }
-
-  h1 {
-    @apply text-2xl;
-  }
-}
-
-/* ---------------------------------------------
-   PRINT STYLES
-   --------------------------------------------- */
-@media print {
-  .no-print {
-    display: none !important;
-  }
-
-  .print-only {
-    display: block !important;
-  }
-
-  body {
-    background: white;
-    color: black;
-    font-size: 12pt;
-  }
-
-  a {
-    text-decoration: underline;
-    color: black;
-  }
-
-  .page-break {
-    page-break-before: always;
   }
 }
 
@@ -664,38 +628,20 @@
   border-width: 0;
 }
 
-.not-sr-only {
-  position: static;
-  width: auto;
-  height: auto;
-  padding: 0;
-  margin: 0;
-  overflow: visible;
-  clip: auto;
-  white-space: normal;
-}
-
-/* ---------------------------------------------
-   DARK MODE TRANSITION
-   --------------------------------------------- */
-* {
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease;
-}
-
 /* ---------------------------------------------
    FOCUS STATES
    --------------------------------------------- */
 :focus-visible {
-  @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-white dark:ring-offset-gray-900;
+  @apply outline-none ring-2 ring-blue-600 ring-offset-2 ring-offset-white dark:ring-offset-gray-900;
 }
 
 /* ---------------------------------------------
    SELECTION STYLES
    --------------------------------------------- */
 ::selection {
-  @apply bg-primary/20 text-primary;
+  @apply bg-blue-600/20 text-blue-900 dark:text-blue-100;
 }
 
 ::-moz-selection {
-  @apply bg-primary/20 text-primary;
+  @apply bg-blue-600/20 text-blue-900 dark:text-blue-100;
 }

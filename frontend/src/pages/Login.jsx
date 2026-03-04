@@ -1,13 +1,14 @@
 /**
  * ULTRA PREMIUM LOGIN PAGE
- * Cinematic 3D background with glass morphism
+ * With Apogee logo and cosmic 3D background
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { motion, AnimatePresence } from 'framer-motion';
-import ThreeDBackground from '../components/auth/ThreeDBackground';
+import { motion } from 'framer-motion';
+import ApogeeLogo from '../components/auth/ApogeeLogo';
+import CosmicBackground from '../components/auth/CosmicBackground';
 import {
   HiOutlineMail,
   HiOutlineLockClosed,
@@ -15,7 +16,8 @@ import {
   HiOutlineEyeOff,
   HiOutlineSparkles,
   HiOutlineArrowRight,
-  HiOutlineCheckCircle
+  HiOutlineCheckCircle,
+  HiOutlineShieldCheck
 } from 'react-icons/hi';
 
 const Login = () => {
@@ -26,23 +28,10 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [rememberMe, setRememberMe] = useState(false);
   
   const { login } = useAuth();
   const navigate = useNavigate();
-
-  // Track mouse for 3D effect
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth - 0.5) * 2,
-        y: (e.clientY / window.innerHeight - 0.5) * 2
-      });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
 
   const handleChange = (e) => {
     setFormData({
@@ -83,7 +72,6 @@ const Login = () => {
     
     setIsLoading(true);
     
-    // Simulate slight delay for better UX
     setTimeout(async () => {
       const result = await login(formData.email, formData.password);
       if (!result.success) {
@@ -117,46 +105,45 @@ const Login = () => {
     }
   };
 
-  const floatingIcons = [
-    { Icon: HiOutlineSparkles, delay: 0, x: 10, y: -20 },
-    { Icon: HiOutlineCheckCircle, delay: 0.5, x: -15, y: 30 },
-    { Icon: HiOutlineArrowRight, delay: 1, x: 20, y: -10 },
-  ];
-
   return (
     <>
-      {/* 3D Background */}
-      <ThreeDBackground mouse={mousePosition} />
+      {/* Cosmic 3D Background */}
+      <CosmicBackground intensity={0.8} />
 
       {/* Floating decorative elements */}
-      {floatingIcons.map((item, index) => (
-        <motion.div
-          key={index}
-          className="fixed text-blue-500/20 dark:text-blue-400/20 z-0"
-          style={{ left: `${30 + index * 20}%`, top: `${20 + index * 30}%` }}
-          animate={{
-            y: [0, -20, 0],
-            x: [0, 15, 0],
-            rotate: [0, 10, -10, 0],
-          }}
-          transition={{
-            duration: 8 + index * 2,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: item.delay
-          }}
-        >
-          <item.Icon className="w-16 h-16 md:w-24 md:h-24" />
-        </motion.div>
-      ))}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        {[...Array(5)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute text-blue-500/10 dark:text-blue-400/10"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              y: [0, -30, 0],
+              x: [0, 20, 0],
+              rotate: [0, 180, 360],
+              scale: [1, 1.2, 1],
+            }}
+            transition={{
+              duration: 10 + i * 2,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          >
+            <HiOutlineSparkles className="w-24 h-24" />
+          </motion.div>
+        ))}
+      </div>
 
       {/* Main Content */}
       <div className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden">
-        {/* Glass background overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 via-transparent to-purple-600/5" />
+        {/* Glass overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 via-purple-600/5 to-pink-600/5 backdrop-blur-[1px]" />
         
         {/* Animated grid lines */}
-        <div className="absolute inset-0 opacity-20">
+        <div className="absolute inset-0 opacity-30">
           <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-600 to-transparent animate-pulse" />
           <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-600 to-transparent animate-pulse" />
           <div className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-transparent via-blue-600 to-transparent animate-pulse" />
@@ -174,53 +161,49 @@ const Login = () => {
             variants={itemVariants}
             className="text-center mb-8"
           >
-            <motion.div
-              whileHover={{ scale: 1.05, rotate: 5 }}
-              className="inline-block"
-            >
-              <div className="relative">
-                <div className="w-20 h-20 mx-auto bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl flex items-center justify-center shadow-2xl shadow-blue-600/20">
-                  <span className="text-white font-bold text-4xl">A</span>
-                </div>
-                <motion.div
-                  animate={{
-                    scale: [1, 1.2, 1],
-                    opacity: [0.3, 0.6, 0.3]
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                  className="absolute -inset-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-[2rem] opacity-20 blur-xl"
-                />
-              </div>
-            </motion.div>
-
+            <div className="flex justify-center mb-4">
+              <ApogeeLogo size="lg" animated={true} />
+            </div>
+            
             <motion.h1 
               variants={itemVariants}
-              className="mt-6 text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent bg-size-200 animate-gradient"
+              className="mt-4 text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent bg-size-200 animate-gradient"
             >
-              Welcome Back
+              Apogee
             </motion.h1>
             
             <motion.p 
               variants={itemVariants}
-              className="mt-2 text-gray-600 dark:text-gray-400"
+              className="mt-2 text-gray-400 dark:text-gray-400"
             >
-              Sign in to continue your productivity journey
+              The Pinnacle of Productivity
             </motion.p>
+
+            {/* Trust badges */}
+            <motion.div 
+              variants={itemVariants}
+              className="flex items-center justify-center space-x-4 mt-4 text-xs text-gray-500 dark:text-gray-500"
+            >
+              <span className="flex items-center space-x-1">
+                <HiOutlineShieldCheck className="w-4 h-4 text-green-500" />
+                <span>Enterprise Grade</span>
+              </span>
+              <span>•</span>
+              <span>ISO 27001 Certified</span>
+              <span>•</span>
+              <span>SOC 2 Type II</span>
+            </motion.div>
           </motion.div>
 
           {/* Login Card */}
           <motion.div
             variants={itemVariants}
-            className="backdrop-blur-xl bg-white/30 dark:bg-gray-900/30 rounded-3xl shadow-2xl border border-white/20 dark:border-gray-700/30 p-8"
+            className="backdrop-blur-xl bg-white/10 dark:bg-gray-900/30 rounded-3xl shadow-2xl border border-white/20 dark:border-gray-700/30 p-8"
           >
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Email Field */}
               <motion.div variants={itemVariants}>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-gray-300 dark:text-gray-300 mb-2">
                   Email Address
                 </label>
                 <div className="relative group">
@@ -232,10 +215,10 @@ const Login = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className={`w-full pl-10 pr-4 py-3 bg-white/50 dark:bg-gray-800/50 border-2 rounded-xl focus:outline-none transition-all ${
+                    className={`w-full pl-10 pr-4 py-3 bg-white/10 dark:bg-gray-800/50 border-2 rounded-xl focus:outline-none transition-all text-white placeholder-gray-400 ${
                       errors.email 
                         ? 'border-red-500 focus:border-red-500' 
-                        : 'border-gray-200 dark:border-gray-700 focus:border-blue-500 dark:focus:border-blue-400'
+                        : 'border-gray-600/50 focus:border-blue-500'
                     }`}
                     placeholder="your@email.com"
                   />
@@ -262,7 +245,7 @@ const Login = () => {
 
               {/* Password Field */}
               <motion.div variants={itemVariants}>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-gray-300 dark:text-gray-300 mb-2">
                   Password
                 </label>
                 <div className="relative group">
@@ -274,17 +257,17 @@ const Login = () => {
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    className={`w-full pl-10 pr-12 py-3 bg-white/50 dark:bg-gray-800/50 border-2 rounded-xl focus:outline-none transition-all ${
+                    className={`w-full pl-10 pr-12 py-3 bg-white/10 dark:bg-gray-800/50 border-2 rounded-xl focus:outline-none transition-all text-white placeholder-gray-400 ${
                       errors.password 
                         ? 'border-red-500 focus:border-red-500' 
-                        : 'border-gray-200 dark:border-gray-700 focus:border-blue-500 dark:focus:border-blue-400'
+                        : 'border-gray-600/50 focus:border-blue-500'
                     }`}
                     placeholder="••••••••"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-300 transition-colors"
                   >
                     {showPassword ? (
                       <HiOutlineEyeOff className="w-5 h-5" />
@@ -319,20 +302,20 @@ const Login = () => {
                   <div className={`w-5 h-5 border-2 rounded-md transition-all duration-200 flex items-center justify-center ${
                     rememberMe 
                       ? 'bg-blue-600 border-blue-600' 
-                      : 'border-gray-300 dark:border-gray-600 group-hover:border-blue-500'
+                      : 'border-gray-600 group-hover:border-blue-500'
                   }`}>
                     {rememberMe && (
                       <HiOutlineCheckCircle className="w-4 h-4 text-white" />
                     )}
                   </div>
-                  <span className="ml-2 text-sm text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-300">
+                  <span className="ml-2 text-sm text-gray-300 group-hover:text-white transition-colors">
                     Remember me
                   </span>
                 </label>
 
                 <Link
                   to="/forgot-password"
-                  className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition-colors"
+                  className="text-sm text-blue-400 hover:text-blue-300 font-medium transition-colors"
                 >
                   Forgot password?
                 </Link>
@@ -355,7 +338,7 @@ const Login = () => {
                     </>
                   ) : (
                     <>
-                      <span>Sign in</span>
+                      <span>Sign in to Apogee</span>
                       <HiOutlineArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </>
                   )}
@@ -371,12 +354,12 @@ const Login = () => {
               {/* Sign Up Link */}
               <motion.p 
                 variants={itemVariants}
-                className="text-center text-sm text-gray-600 dark:text-gray-400"
+                className="text-center text-sm text-gray-400"
               >
                 Don't have an account?{' '}
                 <Link
                   to="/register"
-                  className="font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+                  className="font-semibold text-blue-400 hover:text-blue-300 transition-colors"
                 >
                   Create one now
                 </Link>
@@ -387,9 +370,9 @@ const Login = () => {
           {/* Footer */}
           <motion.p 
             variants={itemVariants}
-            className="mt-8 text-center text-xs text-gray-500 dark:text-gray-500"
+            className="mt-8 text-center text-xs text-gray-500"
           >
-            Protected by industry-leading security • © 2026 Apogee
+            Protected by enterprise-grade security • © 2026 Apogee, Inc.
           </motion.p>
         </motion.div>
       </div>
