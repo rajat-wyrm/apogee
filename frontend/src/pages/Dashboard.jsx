@@ -90,7 +90,6 @@ import {
   HiOutlinePencilAlt,
   HiOutlinePhotograph,
   HiOutlineCamera,
-  HiOutlineVideoCamera,
   HiOutlineFilm,
   HiOutlineMusicNote,
   HiOutlineVolumeUp as HiOutlineMusic,
