@@ -1,0 +1,120 @@
+/**
+ * 3D Background Component
+ * Cinematic particle system with WebGL
+ */
+
+import React, { useRef, useMemo } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { Points, PointMaterial, Sphere, MeshDistortMaterial } from '@react-three/drei';
+import * as THREE from 'three';
+
+const ParticleField = ({ count = 2000, color = '#6366f1' }) => {
+  const points = useRef();
+  
+  const particlesPosition = useMemo(() => {
+    const positions = new Float32Array(count * 3);
+    
+    for (let i = 0; i < count; i++) {
+      const radius = 15 + Math.random() * 10;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      
+      positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+      positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+      positions[i * 3 + 2] = radius * Math.cos(phi);
+    }
+    
+    return positions;
+  }, [count]);
+
+  useFrame((state) => {
+    const time = state.clock.getElapsedTime();
+    points.current.rotation.y = time * 0.05;
+    points.current.rotation.x = Math.sin(time * 0.1) * 0.1;
+  });
+
+  return (
+    <Points ref={points}>
+      <PointMaterial
+        transparent
+        vertexColors
+        size={0.15}
+        sizeAttenuation={true}
+        depthWrite={false}
+        blending={THREE.AdditiveBlending}
+      />
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          count={count}
+          array={particlesPosition}
+          itemSize={3}
+        />
+        <bufferAttribute
+          attach="attributes-color"
+          count={count}
+          array={new Float32Array(count * 3).map(() => Math.random() * 0.5 + 0.5)}
+          itemSize={3}
+        />
+      </bufferGeometry>
+    </Points>
+  );
+};
+
+const FloatingSphere = () => {
+  const sphere = useRef();
+  
+  useFrame(({ clock }) => {
+    const time = clock.getElapsedTime();
+    sphere.current.position.y = Math.sin(time) * 2;
+    sphere.current.rotation.x = time * 0.1;
+    sphere.current.rotation.y = time * 0.2;
+  });
+
+  return (
+    <Sphere ref={sphere} args={[2, 64, 64]} position={[0, 0, -10]}>
+      <MeshDistortMaterial
+        color="#4f46e5"
+        emissive="#312e81"
+        roughness={0.2}
+        metalness={0.8}
+        distort={0.4}
+        speed={2}
+      />
+    </Sphere>
+  );
+};
+
+const ThreeDBackground = ({ intensity = 1 }) => {
+  return (
+    <div className="fixed inset-0 -z-10 pointer-events-none">
+      <Canvas
+        camera={{ position: [0, 0, 30], fov: 60 }}
+        style={{ background: 'transparent' }}
+        gl={{ antialias: true, alpha: true }}
+      >
+        <ambientLight intensity={0.5 * intensity} />
+        <pointLight position={[10, 10, 10]} intensity={1 * intensity} />
+        <pointLight position={[-10, -10, -10]} intensity={0.5 * intensity} />
+        
+        <FloatingSphere />
+        <ParticleField count={3000} color="#6366f1" />
+        
+        {/* Additional decorative elements */}
+        <Points position={[5, 5, -5]}>
+          <PointMaterial color="#8b5cf6" size={0.1} sizeAttenuation={true} />
+          <bufferGeometry>
+            <bufferAttribute
+              attach="attributes-position"
+              count={100}
+              array={new Float32Array(300).map(() => (Math.random() - 0.5) * 20)}
+              itemSize={3}
+            />
+          </bufferGeometry>
+        </Points>
+      </Canvas>
+    </div>
+  );
+};
+
+export default ThreeDBackground;
