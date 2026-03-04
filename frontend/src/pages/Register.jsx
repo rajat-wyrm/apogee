@@ -1,13 +1,18 @@
 /**
- * Register Page
- * User registration form with validation
+ * Register Page - FIXED (No duplicate imports)
  */
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
-import { HiUser, HiMail, HiLock } from 'react-icons/hi';
+import {
+  HiOutlineUser,
+  HiOutlineMail,
+  HiOutlineLockClosed,  // ✅ Import ONCE
+  HiOutlineEye,
+  HiOutlineEyeOff
+} from 'react-icons/hi';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +21,8 @@ const Register = () => {
     password: '',
     confirmPassword: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const { register } = useAuth();
   const navigate = useNavigate();
@@ -25,7 +32,6 @@ const Register = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
-    // Clear error for this field when user starts typing
     if (errors[e.target.name]) {
       setErrors({
         ...errors,
@@ -101,13 +107,14 @@ const Register = () => {
         
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
+            {/* Name Field */}
             <div>
               <label htmlFor="name" className="sr-only">
                 Full Name
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <HiUser className="h-5 w-5 text-gray-400" />
+                  <HiOutlineUser className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
                   id="name"
@@ -128,13 +135,14 @@ const Register = () => {
               )}
             </div>
             
+            {/* Email Field */}
             <div>
               <label htmlFor="email" className="sr-only">
                 Email address
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <HiMail className="h-5 w-5 text-gray-400" />
+                  <HiOutlineMail className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
                   id="email"
@@ -155,54 +163,78 @@ const Register = () => {
               )}
             </div>
             
+            {/* Password Field */}
             <div>
               <label htmlFor="password" className="sr-only">
                 Password
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <HiLock className="h-5 w-5 text-gray-400" />
+                  <HiOutlineLockClosed className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
                   id="password"
                   name="password"
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   autoComplete="new-password"
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  className={`appearance-none relative block w-full px-3 py-3 pl-10 border ${
+                  className={`appearance-none relative block w-full px-3 py-3 pl-10 pr-10 border ${
                     errors.password ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                   } placeholder-gray-500 text-gray-900 dark:text-white dark:bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
                   placeholder="Password"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                >
+                  {showPassword ? (
+                    <HiOutlineEyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                  ) : (
+                    <HiOutlineEye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                  )}
+                </button>
               </div>
               {errors.password && (
                 <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.password}</p>
               )}
             </div>
             
+            {/* Confirm Password Field */}
             <div>
               <label htmlFor="confirmPassword" className="sr-only">
                 Confirm Password
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <HiLock className="h-5 w-5 text-gray-400" />
+                  <HiOutlineLockClosed className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
                   id="confirmPassword"
                   name="confirmPassword"
-                  type="password"
+                  type={showConfirmPassword ? 'text' : 'password'}
                   autoComplete="new-password"
                   required
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className={`appearance-none relative block w-full px-3 py-3 pl-10 border ${
+                  className={`appearance-none relative block w-full px-3 py-3 pl-10 pr-10 border ${
                     errors.confirmPassword ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                   } placeholder-gray-500 text-gray-900 dark:text-white dark:bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
                   placeholder="Confirm Password"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                >
+                  {showConfirmPassword ? (
+                    <HiOutlineEyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                  ) : (
+                    <HiOutlineEye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                  )}
+                </button>
               </div>
               {errors.confirmPassword && (
                 <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.confirmPassword}</p>

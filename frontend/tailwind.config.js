@@ -20,6 +20,7 @@ export default {
           800: '#1e40af',
           900: '#1e3a8a',
         },
+        border: 'hsl(var(--border))',
       },
       animation: {
         'gradient': 'gradient 3s ease infinite',

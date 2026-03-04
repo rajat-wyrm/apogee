@@ -1,5 +1,6 @@
 /**
  * Apogee - Main Server File
+ * Entry point for the backend application
  */
 
 require('dotenv').config();
@@ -34,7 +35,11 @@ app.use(cors({
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: {
+    success: false,
+    error: 'Too many requests, please try again later.'
+  }
 });
 app.use('/api', limiter);
 
@@ -52,7 +57,33 @@ app.get('/api/health', (req, res) => {
   res.json({ 
     success: true, 
     message: 'Apogee API is running',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV,
+    endpoints: {
+      auth: {
+        register: 'POST /api/auth/register',
+        login: 'POST /api/auth/login',
+        me: 'GET /api/auth/me'
+      },
+      projects: {
+        getAll: 'GET /api/projects',
+        create: 'POST /api/projects',
+        getOne: 'GET /api/projects/:id',
+        update: 'PUT /api/projects/:id',
+        delete: 'DELETE /api/projects/:id',
+        stats: 'GET /api/projects/stats'
+      },
+      tasks: {
+        getAll: 'GET /api/tasks',
+        create: 'POST /api/tasks',
+        getOne: 'GET /api/tasks/:id',
+        update: 'PUT /api/tasks/:id',
+        delete: 'DELETE /api/tasks/:id',
+        toggle: 'PATCH /api/tasks/:id/toggle',
+        stats: 'GET /api/tasks/stats',
+        bulkDelete: 'DELETE /api/tasks/bulk'
+      }
+    }
   });
 });
 
@@ -65,11 +96,22 @@ app.use((req, res) => {
 });
 
 // Error handler
+// Error handler
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ 
-    success: false, 
-    error: err.message || 'Internal server error' 
+  console.error('Error:', err);
+  
+  // Handle AppError instances
+  if (err.isOperational) {
+    return res.status(err.statusCode).json({
+      success: false,
+      error: err.message
+    });
+  }
+  
+  // Handle unknown errors
+  res.status(500).json({
+    success: false,
+    error: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error'
   });
 });
 
@@ -78,5 +120,6 @@ app.listen(PORT, () => {
   console.log('\n' + '='.repeat(50));
   console.log(`🚀 Apogee Server running on port ${PORT}`);
   console.log(`📍 http://localhost:${PORT}`);
+  console.log(`🔧 Environment: ${process.env.NODE_ENV}`);
   console.log('='.repeat(50) + '\n');
 });

@@ -1,6 +1,6 @@
 /**
- * Navbar Component
- * Cinematic navigation with user menu, theme toggle, and search
+ * Navbar Component - FIXED VERSION
+ * Correct icon imports for react-icons/hi
  */
 
 import React, { useState, useEffect, Fragment } from 'react';
@@ -9,8 +9,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
 import { Menu, Transition, Dialog } from '@headlessui/react';
 import {
+  // Home & Layout
   HiOutlineHome,
-  HiOutlineLayoutGrid,
+  HiOutlineViewGrid,  // ✅ Changed from HiOutlineLayoutGrid
   HiOutlineCheckCircle,
   HiOutlineUser,
   HiOutlineCog,
@@ -22,12 +23,14 @@ import {
   HiOutlineMenu,
   HiOutlineX,
   HiOutlineSparkles,
-  HiOutlineChartBar,
+  HiOutlineChartBar,   // ✅ Changed from HiOutlineChartBar (this one is correct)
   HiOutlineCalendar,
   HiOutlineUsers,
   HiOutlineQuestionMarkCircle,
   HiOutlineMail,
-  HiOutlineChevronDown
+  HiOutlineChevronDown,
+  HiOutlineRefresh,
+  HiOutlineFilter
 } from 'react-icons/hi';
 
 const Navbar = () => {
@@ -55,7 +58,6 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    // Check for saved theme
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
@@ -95,7 +97,7 @@ const Navbar = () => {
   const unreadCount = notifications.filter(n => !n.read).length;
 
   const navLinks = [
-    { path: '/dashboard', name: 'Dashboard', icon: HiOutlineLayoutGrid },
+    { path: '/dashboard', name: 'Dashboard', icon: HiOutlineViewGrid },  // ✅ Fixed
     { path: '/projects', name: 'Projects', icon: HiOutlineSparkles },
     { path: '/tasks', name: 'Tasks', icon: HiOutlineCheckCircle },
     { path: '/analytics', name: 'Analytics', icon: HiOutlineChartBar },
