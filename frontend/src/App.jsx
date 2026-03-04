@@ -1,6 +1,6 @@
 /**
- * Main App Component
- * Sets up routing and global providers with Navbar
+ * Main App Component - FIXED VERSION
+ * Proper routing with auth protection
  */
 
 import React from 'react';
@@ -10,7 +10,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import { AuthProvider, useAuth } from './context/AuthContext';
-import Navbar from './components/layout/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -18,28 +17,40 @@ import Dashboard from './pages/Dashboard';
 import Projects from './pages/Projects';
 import Tasks from './pages/Tasks';
 import Profile from './pages/Profile';
+import Calendar from './pages/Calendar';
+import Team from './pages/Team';
+import Analytics from './pages/Analytics';
 
-// Create a client for React Query
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
       retry: 1,
-      staleTime: 5 * 60 * 1000, // 5 minutes
+      staleTime: 5 * 60 * 1000,
     },
   },
 });
 
 function AppContent() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 to-purple-600">
+        <div className="text-center">
+          <div className="w-20 h-20 mx-auto mb-4 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-white text-lg">Loading Apogee...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950">
-      {user && <Navbar />}
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Routes>
         {/* Public routes */}
-        <Route path="/login" element={!user ? <Login /> : <Navigate to="/dashboard" />} />
-        <Route path="/register" element={!user ? <Register /> : <Navigate to="/dashboard" />} />
+        <Route path="/login" element={!user ? <Login /> : <Navigate to="/dashboard" replace />} />
+        <Route path="/register" element={!user ? <Register /> : <Navigate to="/dashboard" replace />} />
         
         {/* Protected routes */}
         <Route
@@ -75,6 +86,38 @@ function AppContent() {
           }
         />
         <Route
+          path="/tasks/:id"
+          element={
+            <ProtectedRoute>
+              <Tasks />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/calendar"
+          element={
+            <ProtectedRoute>
+              <Calendar />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/team"
+          element={
+            <ProtectedRoute>
+              <Team />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/analytics"
+          element={
+            <ProtectedRoute>
+              <Analytics />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/profile"
           element={
             <ProtectedRoute>
@@ -84,8 +127,8 @@ function AppContent() {
         />
         
         {/* Default routes */}
-        <Route path="/" element={<Navigate to={user ? "/dashboard" : "/login"} />} />
-        <Route path="*" element={<Navigate to={user ? "/dashboard" : "/login"} />} />
+        <Route path="/" element={<Navigate to={user ? "/dashboard" : "/login"} replace />} />
+        <Route path="*" element={<Navigate to={user ? "/dashboard" : "/login"} replace />} />
       </Routes>
       
       <Toaster
