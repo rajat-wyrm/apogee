@@ -261,6 +261,6 @@ const CosmicBackground = ({ intensity = 0.7 }) => {
       <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-blue-900/20 pointer-events-none" />
     </div>
   );
-};
+}; 
 
 export default CosmicBackground;
